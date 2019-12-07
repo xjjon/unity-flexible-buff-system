@@ -5,15 +5,12 @@ using UnityEngine;
 
 public class TimedSpeedBuff : TimedBuff
 {
-    private readonly ScriptableSpeedBuff _speedBuff;
-
     private readonly MovementComponent _movementComponent;
 
-    public TimedSpeedBuff(float duration, ScriptableBuff buff, GameObject obj) : base(duration, buff, obj)
+    public TimedSpeedBuff(ScriptableBuff buff, GameObject obj) : base(buff, obj)
     {
         //Getting MovementComponent, replace with your own implementation
         _movementComponent = obj.GetComponent<MovementComponent>();
-        _speedBuff = (ScriptableSpeedBuff)buff;
     }
 
     protected override void ApplyEffect()
@@ -26,6 +23,7 @@ public class TimedSpeedBuff : TimedBuff
     public override void End()
     {
         //Revert speed increase
-        _movementComponent.MovementSpeed -= _speedBuff.SpeedIncrease;
+        ScriptableSpeedBuff speedBuff = (ScriptableSpeedBuff) Buff;
+        _movementComponent.MovementSpeed -= speedBuff.SpeedIncrease;
     }
 }

@@ -9,7 +9,7 @@ namespace ScriptableObjects
 
         public override TimedBuff InitializeBuff(GameObject obj)
         {
-            return new TimedSpeedBuff(Duration, this, obj);
+            return new TimedSpeedBuff(this, obj);
         }
     }
 }

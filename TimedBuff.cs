@@ -4,13 +4,12 @@ public abstract class TimedBuff
 {
 
     protected float Duration;
-    protected readonly ScriptableBuff Buff;
+    public ScriptableBuff Buff { get; }
     protected readonly GameObject Obj;
-    public bool IsFinished => Duration <= 0;
+    public bool IsFinished;
 
-    public TimedBuff(float duration, ScriptableBuff buff, GameObject obj)
+    public TimedBuff(ScriptableBuff buff, GameObject obj)
     {
-        Duration = duration;
         Buff = buff;
         Obj = obj;
     }
@@ -21,6 +20,7 @@ public abstract class TimedBuff
         if (Duration <= 0)
         {
             End();
+            IsFinished = true;
         }
     }
 
@@ -29,7 +29,7 @@ public abstract class TimedBuff
      */
     public void Activate()
     {
-        if (Buff.IsDurationStacked)
+        if (Buff.IsDurationStacked || Duration <= 0)
         {
             Duration += Buff.Duration;
         }

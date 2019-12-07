@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 public class BuffableEntity: MonoBehaviour
 {
 
-    //List of all current buffs
-    public List<TimedBuff> CurrentBuffs = new List<TimedBuff>();
+    private readonly Dictionary<ScriptableBuff, TimedBuff> _buffs = new Dictionary<ScriptableBuff, TimedBuff>();
 
     void Update()
     {
@@ -10,19 +12,26 @@ public class BuffableEntity: MonoBehaviour
         //if (Game.isPaused)
         //    return;
 
-        foreach(TimedBuff buff in CurrentBuffs.ToArray())
+        foreach (var buff in _buffs.Values)
         {
             buff.Tick(Time.deltaTime);
             if (buff.IsFinished)
             {
-                CurrentBuffs.Remove(buff);
+                _buffs.Remove(buff.Buff);
             }
         }
     }
 
     public void AddBuff(TimedBuff buff)
     {
-        CurrentBuffs.Add(buff);
-        buff.Activate();
+        if (_buffs.ContainsKey(buff.Buff))
+        {
+            _buffs[buff.Buff].Activate();
+        }
+        else
+        {
+            _buffs.Add(buff.Buff, buff);
+            buff.Activate();
+        }
     }
 }
