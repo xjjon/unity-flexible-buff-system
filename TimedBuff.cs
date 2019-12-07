@@ -1,28 +1,44 @@
+using UnityEngine;
+
 public abstract class TimedBuff
 {
 
-    protected float duration;
-    protected ScriptableBuff buff;
-    protected GameObject obj;
-    public Boolean IsFinished
-    {
-        get { return duration <= 0? true: false; }
-    }
+    protected float Duration;
+    protected readonly ScriptableBuff Buff;
+    protected readonly GameObject Obj;
+    public bool IsFinished => Duration <= 0;
 
     public TimedBuff(float duration, ScriptableBuff buff, GameObject obj)
     {
-        this.duration = duration;
-        this.buff = buff;
-        this.obj = obj;
+        Duration = duration;
+        Buff = buff;
+        Obj = obj;
     }
 
     public void Tick(float delta)
     {
-        duration -= delta;
-        if(duration <= 0)
+        Duration -= delta;
+        if (Duration <= 0)
+        {
             End();
+        }
     }
 
-    public abstract void Activate();
+    /**
+     * Activates buff or extends duration if ScriptableBuff has IsDurationStacked or IsEffectStacked set to true.
+     */
+    public void Activate()
+    {
+        if (Buff.IsDurationStacked)
+        {
+            Duration += Buff.Duration;
+        }
+
+        if (Buff.IsEffectStacked || Duration <= 0)
+        {
+            ApplyEffect();
+        }
+    }
+    protected abstract void ApplyEffect();
     public abstract void End();
 }
