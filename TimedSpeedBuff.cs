@@ -24,6 +24,7 @@ public class TimedSpeedBuff : TimedBuff
     {
         //Revert speed increase
         ScriptableSpeedBuff speedBuff = (ScriptableSpeedBuff) Buff;
-        _movementComponent.MovementSpeed -= speedBuff.SpeedIncrease;
+        _movementComponent.MovementSpeed -= speedBuff.SpeedIncrease * EffectStacks;
+        EffectStacks = 0;
     }
 }

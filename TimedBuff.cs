@@ -4,6 +4,7 @@ public abstract class TimedBuff
 {
 
     protected float Duration;
+    protected int EffectStacks;
     public ScriptableBuff Buff { get; }
     protected readonly GameObject Obj;
     public bool IsFinished;
@@ -29,14 +30,15 @@ public abstract class TimedBuff
      */
     public void Activate()
     {
-        if (Buff.IsDurationStacked || Duration <= 0)
-        {
-            Duration += Buff.Duration;
-        }
-
         if (Buff.IsEffectStacked || Duration <= 0)
         {
             ApplyEffect();
+            EffectStacks++;
+        }
+        
+        if (Buff.IsDurationStacked || Duration <= 0)
+        {
+            Duration += Buff.Duration;
         }
     }
     protected abstract void ApplyEffect();

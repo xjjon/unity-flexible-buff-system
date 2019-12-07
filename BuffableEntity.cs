@@ -1,18 +1,18 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BuffableEntity: MonoBehaviour
 {
-
     private readonly Dictionary<ScriptableBuff, TimedBuff> _buffs = new Dictionary<ScriptableBuff, TimedBuff>();
-
+    
     void Update()
     {
         //OPTIONAL, return before updating each buff if game is paused
         //if (Game.isPaused)
         //    return;
 
-        foreach (var buff in _buffs.Values)
+        foreach (var buff in _buffs.Values.ToList())
         {
             buff.Tick(Time.deltaTime);
             if (buff.IsFinished)
