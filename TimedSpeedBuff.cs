@@ -27,4 +27,9 @@ public class TimedSpeedBuff : TimedBuff
         _movementComponent.MovementSpeed -= speedBuff.SpeedIncrease * EffectStacks;
         EffectStacks = 0;
     }
+
+    protected override void ApplyTick()
+    {
+        //Do nothing
+    }
 }

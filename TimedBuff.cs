@@ -2,12 +2,16 @@ using UnityEngine;
 
 public abstract class TimedBuff
 {
-
+    // How often ApplyTick() is called (in seconds
+    protected float TickRate = 1;
+    // Total duration of buff
     protected float Duration;
     protected int EffectStacks;
     public ScriptableBuff Buff { get; }
     protected readonly GameObject Obj;
     public bool IsFinished;
+
+    private float _timeSinceLastTick;
 
     public TimedBuff(ScriptableBuff buff, GameObject obj)
     {
@@ -18,6 +22,13 @@ public abstract class TimedBuff
     public void Tick(float delta)
     {
         Duration -= delta;
+        _timeSinceLastTick += delta;
+        if (_timeSinceLastTick >= TickRate)
+        {
+            ApplyTick();
+            _timeSinceLastTick = 0;
+        }
+
         if (Duration <= 0)
         {
             End();
@@ -42,5 +53,8 @@ public abstract class TimedBuff
         }
     }
     protected abstract void ApplyEffect();
+
+    // Called every TickRate seconds. Can be used for things such as damage over time or healing over time.
+    protected abstract void ApplyTick();
     public abstract void End();
 }
